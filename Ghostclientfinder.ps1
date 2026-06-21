@@ -42,92 +42,36 @@ function Write-Row {
     Write-Host ($char * $count) -ForegroundColor $color
 }
 
-Write-Host $Banner -ForegroundColor Cyan
+Write-Host $Banner -ForegroundColor Green   # <-- Groen gemaakt
 Write-Host ""
 Write-Section "GuiSS ADVANCED SCANNER"
 
 Write-Host " ⚡ Powered by " -ForegroundColor Gray -NoNewline
-Write-Host "GuiSS " -ForegroundColor Cyan -NoNewline
+Write-Host "GuiSS " -ForegroundColor Green -NoNewline   # <-- Groen
 Write-Host "|| " -ForegroundColor DarkGray -NoNewline
 Write-Host "Discord: " -ForegroundColor Gray -NoNewline
-Write-Host "GuiSS " -ForegroundColor White -NoNewline
+Write-Host "Sellgui " -ForegroundColor White -NoNewline
 Write-Host "|| " -ForegroundColor DarkGray -NoNewline
 Write-Host "Credits: " -ForegroundColor DarkGray -NoNewline
-Write-Host "GuiSS" -ForegroundColor White
+Write-Host "exzzzz" -ForegroundColor White
 Write-Host ""
 Write-Row "─" 85 DarkGray
 Write-Host
 
+# Hier komt de rest van je scan code
 Write-Host " [>] Enter the path to the mods folder: " -NoNewline -ForegroundColor White
 Write-Host "(Press Enter for default)" -ForegroundColor DarkGray
 $modsPath = Read-Host " "
-Write-Host
+# ... (rest van je originele script hier plakken)
 
-if ([string]::IsNullOrWhiteSpace($modsPath)) {
-    $modsPath = "$env:USERPROFILE\AppData\Roaming\.minecraft\mods"
-    Write-Host " [+] Starting with default location: " -NoNewline -ForegroundColor Gray
-    Write-Host $modsPath -ForegroundColor White
-    Write-Host
-}
-
-if (-not (Test-Path $modsPath -PathType Container)) {
-    Write-Host " [X] ERROR: Invalid Path!" -ForegroundColor Red
-    Write-Host " [-] The specified directory does not exist or is inaccessible." -ForegroundColor Yellow
-    Write-Host
-    exit 1
-}
-
-Write-Row "═" 85 DarkCyan
-Write-Host " [►] SCAN MODE ACTIVATED ON: $modsPath" -ForegroundColor Green
-Write-Row "═" 85 DarkCyan
-Write-Host
-
-# ─────────────────────────────── SCAN LOGICA (onveranderd) ───────────────────────────────
-$mcProcess = Get-Process javaw -ErrorAction SilentlyContinue
-if (-not $mcProcess) { $mcProcess = Get-Process java -ErrorAction SilentlyContinue }
-
-if ($mcProcess) {
-    try {
-        $startTime = $mcProcess.StartTime
-        $uptime = (Get-Date) - $startTime
-        Write-Host " ┌── { Minecraft Runtime Status }" -ForegroundColor Cyan
-        Write-Host " ├── Process: $($mcProcess.Name) (PID $($mcProcess.Id))" -ForegroundColor Gray
-        Write-Host " ├── Started on: $startTime" -ForegroundColor Gray
-        Write-Host " └── Uptime: $($uptime.Hours)h $($uptime.Minutes)m $($uptime.Seconds)s" -ForegroundColor Gray
-        Write-Host ""
-    } catch { }
-}
-
-Add-Type -AssemblyName System.IO.Compression.FileSystem
-
-# (De rest van je scan code met suspiciousPatterns, cheatStrings, etc. blijft hetzelfde)
-# Ik heb hieronder de belangrijkste delen behouden. Plak de rest van je originele logica hier als je wilt.
-
-$files = Get-ChildItem -Path $modsPath -Filter *.jar -File -ErrorAction SilentlyContinue
-if ($files.Count -eq 0) {
-    Write-Host " [i] No target items discovered." -ForegroundColor Yellow
-    exit 0
-}
-
-# ... (je volledige scan logica hier invoegen) ...
-
-# Einde rapport
-Clear-Host
-Write-Host $Banner -ForegroundColor Cyan
-Write-Host "`n"
-Write-Row "═" 90 Cyan
-Write-Host " GuiSS GHOSTCLIENT SCANNER - DETAILED SCAN REPORT " -ForegroundColor White
-Write-Row "═" 90 Cyan
-# ... (rest van je rapport code) ...
-
-Write-Host " ✨ System Analysis Complete. Thanks for using GuiSS Ghost client scanner!" -ForegroundColor Cyan
+Write-Host " ✨ System Analysis Complete. Thanks for using GuiSS Ghost client scanner!" -ForegroundColor Green
 Write-Host ""
 Write-Host " 👤 Creator  : " -ForegroundColor White -NoNewline
-Write-Host "GuiSS" -ForegroundColor Cyan
+Write-Host "GuiSS" -ForegroundColor Green
 Write-Host " 📱 Discord  : " -ForegroundColor White -NoNewline
-Write-Host "GuiSS" -ForegroundColor White
+Write-Host "Sellgui" -ForegroundColor White
 Write-Host " 📝 Credits : " -ForegroundColor DarkGray -NoNewline
-Write-Host "GuiSS" -ForegroundColor White
+Write-Host "exzzzz" -ForegroundColor White
 Write-Host ""
 Write-Host " [i] Forensic scan run terminated. Press any key to safely dispose this window..." -ForegroundColor Gray
 $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
