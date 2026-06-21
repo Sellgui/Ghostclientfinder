@@ -379,4 +379,10 @@ Write-Host " ✨ System Analysis Complete. Thanks for using GuiSS Ghost client s
 Write-Host ""
 Write-Host " 👤 Creator  : " -ForegroundColor White -NoNewline
 Write-Host "GuiSS" -ForegroundColor Cyan
-Write-Host " 
+Write-Host " 📱 Discord  : " -ForegroundColor White -NoNewline
+Write-Host "Sellgui" -ForegroundColor White
+Write-Host " 📝 Credits : " -ForegroundColor DarkGray -NoNewline
+Write-Host "exzzzz" -ForegroundColor White
+Write-Host ""
+Write-Host " [i] Forensic scan run terminated. Press any key to safely dispose this window..." -ForegroundColor Gray
+$null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
