@@ -13,19 +13,20 @@ if ($currentFont -notmatch "NSimSun|Gothic|Noto") {
 $Banner = @"
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                                                                              ║
-║                       ██████╗ ██╗   ██╗██╗███████╗███████╗                   ║
-║                      ██╔════╝ ██║   ██║██║██╔════╝██╔════╝                   ║
-║                      ██║  ███╗██║   ██║██║███████╗███████╗                   ║
-║                      ██║   ██║██║   ██║██║╚════██║╚════██║                   ║
-║                      ╚██████╔╝╚██████╔╝██║███████║███████║                   ║
-║                       ╚═════╝  ╚═════╝ ╚═╝╚══════╝╚══════╝                   ║
+║  ██████╗ ██╗   ██╗██╗███████╗███████╗███████╗                               ║
+║ ██╔════╝ ██║   ██║██║██╔════╝██╔════╝██╔════╝                               ║
+║ ██║  ███╗██║   ██║██║███████╗███████╗███████╗                               ║
+║ ██║   ██║██║   ██║██║╚════██║╚════██║╚════██║                               ║
+║ ╚██████╔╝╚██████╔╝██║███████║███████║███████║                               ║
+║  ╚═════╝  ╚═════╝ ╚═╝╚══════╝╚══════╝╚══════╝                               ║
 ║                                                                              ║
 ║                    G H O S T   C L I E N T   S C A N                         ║
 ║                                                                              ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
 "@
 
-function Write-Section { param([string]$Title)
+function Write-Section {
+    param([string]$Title)
     Write-Host ""
     Write-Host "╔══════════════════════════════════════════════════════════════╗" -ForegroundColor DarkCyan
     Write-Host ("║ " + $Title.PadRight(58) + "║") -ForegroundColor Cyan
@@ -41,12 +42,12 @@ function Write-Row {
     Write-Host ($char * $count) -ForegroundColor $color
 }
 
-Write-Host $Banner -ForegroundColor Green
+Write-Host $Banner -ForegroundColor Cyan
 Write-Host ""
 Write-Section "GuiSS ADVANCED SCANNER"
 
 Write-Host " ⚡ Powered by " -ForegroundColor Gray -NoNewline
-Write-Host "GuiSS " -ForegroundColor Green -NoNewline
+Write-Host "GuiSS " -ForegroundColor Cyan -NoNewline
 Write-Host "|| " -ForegroundColor DarkGray -NoNewline
 Write-Host "Discord: " -ForegroundColor Gray -NoNewline
 Write-Host "Sellgui " -ForegroundColor White -NoNewline
@@ -81,7 +82,6 @@ Write-Host " [►] SCAN MODE ACTIVATED ON: $modsPath" -ForegroundColor Green
 Write-Row "═" 85 DarkCyan
 Write-Host
 
-# ==================== VOLLEDIGE SCAN LOGICA (zelfde als origineel) ====================
 $mcProcess = Get-Process javaw -ErrorAction SilentlyContinue
 if (-not $mcProcess) { $mcProcess = Get-Process java -ErrorAction SilentlyContinue }
 if ($mcProcess) {
@@ -296,15 +296,20 @@ foreach ($file in $files) {
     if ($scan.Patterns.Count -gt 0 -or $scan.Strings.Count -gt 0 -or $bypass.Count -gt 0) {
         $clientTag = "Custom Modified / Independent Hack"
         if ($scan.ClientFrames.Count -gt 0) { $clientTag = ($scan.ClientFrames | ForEach-Object {$_}) -join ", " }
-        $flaggedMods.Add(@{ File = $file.Name; Source = $source; Client = $clientTag; Indicators = @($scan.Patterns + $scan.Strings + $bypass) })
+        $flaggedMods.Add(@{
+            File = $file.Name
+            Source = $source
+            Client = $clientTag
+            Indicators = @($scan.Patterns + $scan.Strings + $bypass)
+        })
     } else {
         $cleanMods.Add(@{ Name = $file.Name; Details = "No anomalies identified inside target binaries." })
     }
 }
 
-# ==================== RAPPORT ====================
+# RAPPORT
 Clear-Host
-Write-Host $Banner -ForegroundColor Green
+Write-Host $Banner -ForegroundColor Cyan
 Write-Host "`n"
 Write-Row "═" 90 Cyan
 Write-Host " GuiSS GHOSTCLIENT SCANNER - DETAILED SCAN REPORT " -ForegroundColor White
@@ -319,8 +324,59 @@ if ($flaggedMods.Count -gt 0) {
 } else {
     Write-Host "CLEAN - ALL FILES VALIDATED AGAINST TRUSTED STANDARDS" -ForegroundColor Green
 }
+Write-Host ""
+Write-Row "─" 90 DarkGray
+Write-Host " 🛑 FLAGGED SOFTWARE & INJECTED CLIENT ASSEMBLIES ($($flaggedMods.Count) Files Flagged)" -ForegroundColor Red
+Write-Row "─" 90 DarkGray
+Write-Host ""
 
-# (De rest van het rapport is hetzelfde als origineel, alleen branding aangepast)
+if ($flaggedMods.Count -eq 0) {
+    Write-Host " 📋 No malicious modules or cheat client payloads found in the target directory." -ForegroundColor Green
+    Write-Host ""
+} else {
+    foreach ($mod in $flaggedMods) {
+        Write-Host " [💥] DETECTED MOD : " -NoNewline -ForegroundColor White
+        Write-Host "$($mod.File)" -ForegroundColor Red
+        Write-Host " ├── Client Base/Framework : " -NoNewline -ForegroundColor Gray
+        Write-Host "$($mod.Client)" -ForegroundColor Yellow
+        Write-Host " ├── Network Source Stream : " -NoNewline -ForegroundColor Gray
+        Write-Host "$($mod.Source)" -ForegroundColor DarkYellow
+        Write-Host " └── Signature Triggers : " -NoNewline -ForegroundColor Gray
+        $indList = ($mod.Indicators | ForEach-Object { "'$_'" }) -join ", "
+        Write-Host "[$indList]" -ForegroundColor DarkCyan
+        Write-Host ""
+    }
+}
 
-Write-Host "`n ✨ System Analysis Complete. Thanks for using GuiSS Ghost client scanner!" -ForegroundColor Green
-$null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+Write-Row "─" 90 DarkGray
+Write-Host " ✅ SAFE & INDEPENDENT VERIFIED MODS ($($cleanMods.Count) Files Cleared)" -ForegroundColor Green
+Write-Row "─" 90 DarkGray
+Write-Host ""
+
+if ($cleanMods.Count -eq 0) {
+    Write-Host " [!] Zero modules returned verified status benchmarks or repository matches." -ForegroundColor Orange
+    Write-Host ""
+} else {
+    foreach ($c in $cleanMods) {
+        Write-Host " [✓] PASSED: " -NoNewline -ForegroundColor Green
+        Write-Host "$($c.Name) " -NoNewline -ForegroundColor White
+        Write-Host "➔ $($c.Details)" -ForegroundColor DarkGray
+    }
+    Write-Host ""
+}
+
+Write-Row "═" 90 Cyan
+Write-Host " 📊 FINAL ANALYSIS METRICS MATRIX:" -ForegroundColor White
+Write-Host " ────────────────────────────────"
+Write-Host " • Total Examined Elements : " -NoNewline -ForegroundColor Gray; Write-Host "$totalFiles" -ForegroundColor White
+Write-Host " • Rogue/Flagged Items Found : " -NoNewline -ForegroundColor Gray; Write-Host "$($flaggedMods.Count)" -ForegroundColor Red
+Write-Host " • Clean/Verified Packages : " -NoNewline -ForegroundColor Gray; Write-Host "$($cleanMods.Count)" -ForegroundColor Green
+Write-Host ""
+
+Write-Row "═" 90 Cyan
+Write-Host ""
+Write-Host " ✨ System Analysis Complete. Thanks for using GuiSS Ghost client scanner!" -ForegroundColor Cyan
+Write-Host ""
+Write-Host " 👤 Creator  : " -ForegroundColor White -NoNewline
+Write-Host "GuiSS" -ForegroundColor Cyan
+Write-Host " 
